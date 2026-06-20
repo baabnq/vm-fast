@@ -154,6 +154,7 @@ vint_t labelMapperSize = 0;
 #define panic1(message, arg) { printf("Error: %s%s\n", message, arg); exit(1); }
 #define line_panic0(line, message     ) { printf("Error at address %d: %s\n"  , line, message     ); exit(1); }
 #define line_panic1(line, message, arg) { printf("Error at address %d: %s%s\n", line, message, arg); exit(1); }
+#define line_panic1s(line, message, arg) { printf("Error at address %d: %s%d\n", line, message, arg); exit(1); }
 
 
 
@@ -439,7 +440,8 @@ void execute()
 
                 chunk_node_t node = findChunkNodeByPtr(ptr, heapBase);
 
-                if (!node)              line_panic1(inst.sourceOriginLine, "(Heap) Tried to free chunk that is already free, at address: ", ptr);
+
+                if (!node)              line_panic1s(inst.sourceOriginLine, "(Heap) Tried to free chunk that is already free, at address: ", ptr);
                 if (node->size != size) line_panic0(inst.sourceOriginLine, "(Heap) Chunk size mismatch");
 
                 prev = node->prev;
